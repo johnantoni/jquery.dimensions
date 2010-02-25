@@ -2,10 +2,10 @@
  * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
  * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
  *
- * $LastChangedDate: 2007-12-20 08:46:55 -0600 (Thu, 20 Dec 2007) $
- * $Rev: 4259 $
+ * $LastChangedDate: 2007-10-06T18:11:15.103402Z $
+ * $Rev: 4893 $
  *
- * Version: 1.2
+ * Version: @VERSION
  *
  * Requires: jQuery 1.2+
  */
@@ -13,7 +13,7 @@
 (function($){
 	
 $.dimensions = {
-	version: '1.2'
+	version: '@VERSION'
 };
 
 // Create innerHeight, innerWidth, outerHeight and outerWidth methods
@@ -26,7 +26,7 @@ $.each( [ 'Height', 'Width' ], function(i, name){
 		var torl = name == 'Height' ? 'Top'    : 'Left',  // top or left
 		    borr = name == 'Height' ? 'Bottom' : 'Right'; // bottom or right
 		
-		return this.is(':visible') ? this[0]['client' + name] : num( this, name.toLowerCase() ) + num(this, 'padding' + torl) + num(this, 'padding' + borr);
+		return num( this, name.toLowerCase() ) + num(this, 'padding' + torl) + num(this, 'padding' + borr);
 	};
 	
 	// outerHeight and outerWidth
@@ -38,13 +38,10 @@ $.each( [ 'Height', 'Width' ], function(i, name){
 		
 		options = $.extend({ margin: false }, options || {});
 		
-		var val = this.is(':visible') ? 
-				this[0]['offset' + name] : 
-				num( this, name.toLowerCase() )
-					+ num(this, 'border' + torl + 'Width') + num(this, 'border' + borr + 'Width')
-					+ num(this, 'padding' + torl) + num(this, 'padding' + borr);
-		
-		return val + (options.margin ? (num(this, 'margin' + torl) + num(this, 'margin' + borr)) : 0);
+		return num( this, name.toLowerCase() )
+				+ num(this, 'border' + torl + 'Width') + num(this, 'border' + borr + 'Width')
+				+ num(this, 'padding' + torl) + num(this, 'padding' + borr)
+				+ (options.margin ? (num(this, 'margin' + torl) + num(this, 'margin' + borr)) : 0);
 	};
 });
 
@@ -113,7 +110,7 @@ $.fn.extend({
 });
 
 function num(el, prop) {
-	return parseInt($.curCSS(el.jquery?el[0]:el,prop,true))||0;
-};
+	return parseInt($.css(el.jquery?el[0]:el,prop))||0;
+}
 
 })(jQuery);
